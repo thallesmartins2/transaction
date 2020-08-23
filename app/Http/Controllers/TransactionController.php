@@ -38,7 +38,7 @@ class TransactionController extends Controller
     public function show($id)
     {
         try {
-            return response()->json(Transaction::getTransictionById($id).' chegou show', Response::HTTP_OK); 
+            return response()->json(Transaction::getTransactionById($id).' chegou show', Response::HTTP_OK); 
          } catch (\Exception $ex) {
             return json_encode(['erro' => 'Erro ao listar a transação.'.$ex->getMessage()], Response::HTTP_NO_CONTENT);
          }

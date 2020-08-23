@@ -27,7 +27,7 @@ class Transaction extends Model
         return $request->all();
     }
 
-    public static function getTransictionById($id)
+    public static function getTransactionById($id)
     {
         return $id;
     }
