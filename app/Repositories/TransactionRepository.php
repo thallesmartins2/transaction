@@ -29,11 +29,6 @@ class TransactionRepository implements TransactionRepositoryInterface
         return $this->transaction::find($id);
     }
 
-    // public function editTransactionById($id)
-    // {
-    //     return $id
-    // }
-
     public function updateTransactionById($request, $id)
     {
         return $this->transaction::find($id)->update($request->all());

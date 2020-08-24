@@ -25,12 +25,12 @@ class WebService
             'Content-Type'  => 'application/x-www-form-urlencoded',
             'Authorization' => 'Bearer '.$token,
         ];
-       return self::conection('get', 'http://172.17.0.1:9000/api/validatoken', $header)->getStatusCode();
+       return self::conection('get', env('AUTENTICATION').'checktoken', $header)->getStatusCode();
     }
 
     public static function request($verb, $param = null, $body = null, $token)
     {
-        $url = $param ? 'http://172.17.0.1:8001/api/wallet/'.$param  : 'http://172.17.0.1:8001/api/wallet';
+        $url = $param ? env('WALLET').'wallet/'.$param  :  env('WALLET');
         $header = [
             'Content-Type'  => 'application/json',
             'Authorization' => 'Bearer '.$token,
