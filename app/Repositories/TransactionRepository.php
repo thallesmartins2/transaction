@@ -1,13 +1,46 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Repositories;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use App\Models\Transaction;
+use App\Repositories\Contracts\TransactionRepositoryInterface;
 
-class Controller extends BaseController
+class TransactionRepository implements TransactionRepositoryInterface
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    private $transaction;
+
+    public function __construct()
+    {
+        $this->transaction = new Transaction;
+    }
+
+    public function getAll()
+    {
+        return $this->transaction::all();
+    }
+
+    public function storeTransaction(array $transaction)
+    {
+        return $this->transaction::create($transaction);
+    }
+
+    public function getTransactionById($id)
+    {
+
+    }
+
+    public function editTransactionById($id)
+    {
+
+    }
+
+    public function updateTransactionById($request, $id)
+    {
+
+    }
+
+    public function deleteTransactionById($id)
+    {
+
+    }
 }

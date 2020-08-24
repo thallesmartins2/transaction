@@ -19,6 +19,7 @@ class CreateWalletTable extends Migration
             $table->foreign('user_id')->references('id')->on('user');
             $table->decimal('balance', 15, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

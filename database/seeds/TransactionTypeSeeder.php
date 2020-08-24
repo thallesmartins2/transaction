@@ -14,8 +14,8 @@ class TransactionTypeSeeder extends Seeder
     public function run()
     {
         $transactions_type = [
-            ['name' => 'lojista'],
-            ['name' => 'comum']
+            ['name' => 'débito'],
+            ['name' => 'crédito']
         ];
 
         foreach ($transactions_type as $transaction_type) {
