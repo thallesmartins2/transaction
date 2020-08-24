@@ -25,15 +25,6 @@ class TransactionController extends Controller
         }
     }
 
-    // public function create()
-    // {
-    //     try {
-    //         return response()->json(ConTransactiontrato::getAno(), Response::HTTP_OK); 
-    //      } catch (\Exception $ex) {
-    //         return json_encode(['erro' => 'Erro ao listar os anos por contrato.'.$ex->getMessage()], Response::HTTP_NO_CONTENT);
-    //      }
-    // }
-
     public function store(Request $request)
     {
         try {
@@ -51,15 +42,6 @@ class TransactionController extends Controller
             return json_encode(['erro' => 'Erro ao listar a transação.'.$ex->getMessage()], Response::HTTP_NO_CONTENT);
         }
     }
-
-    // public function edit($id)
-    // {
-    //     try {
-    //         return response()->json($this->transactionService->editTransactionById($id), Response::HTTP_OK); 
-    //     } catch (\Exception $ex) {
-    //         return json_encode(['erro' => 'Erro ao editar a transação.'.$ex->getMessage()], Response::HTTP_NO_CONTENT);
-    //     }
-    // }
 
     public function update(Request $request, $id)
     {
