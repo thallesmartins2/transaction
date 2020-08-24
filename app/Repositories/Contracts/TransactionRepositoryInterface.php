@@ -10,8 +10,6 @@ interface TransactionRepositoryInterface
 
     public function getTransactionById($id);
 
-    // public function editTransactionById($id);
-
     public function updateTransactionById($request, $id);
 
     public function deleteTransactionById($id);
