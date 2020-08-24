@@ -25,8 +25,8 @@ class TransactionService
 
     public function setTransaction($request)
     {
-        $payee_wallet = WebService::request('get', $request->payee);
-        $payer_wallet = WebService::request('get', $request->payer);
+        $payee_wallet = WebService::request('get', $request->payee, null, $request->BearerToken());
+        $payer_wallet = WebService::request('get', $request->payer, null, $request->BearerToken());
         try {
             if($this->getAuthorization()) {
                 if ($this->checkComumUserType($payer_wallet)) {
@@ -34,11 +34,11 @@ class TransactionService
                         //cria nova transação de débito
                         $new_debit_transaction = $this->createDebitTransaction($payer_wallet->id, self::DEBITO, $request->value);
                         // realiza débito no carteira
-                        $new_debit_wallet = WebService::request('put', $payer_wallet->id, ['value' => -$request->value]);
+                        $new_debit_wallet = WebService::request('put', $payer_wallet->id, ['value' => -$request->value], $request->BearerToken());
                         // cria nova transação de crédito
                         $new_credit_transaction = $this->createCreditTransaction($payee_wallet->id, self::CREDITO, $request->value);
                         // realiza credito na carteira
-                        $new_credit_wallet = WebService::request('put', $payee_wallet->id, ['value' => $request->value]);
+                        $new_credit_wallet = WebService::request('put', $payee_wallet->id, ['value' => $request->value], $request->BearerToken());
                         return $this->notificationAfterTransfer();
                     } else {
                         return ['mensagem' => 'Usuário não possui saldo'];
@@ -50,10 +50,27 @@ class TransactionService
                 return ['mensagem' => 'Não autorizado'];
             }
         } catch (\Throwable $th) {
-            $this->rollBackWallet($payee_wallet, $payer_wallet);
+            $this->rollBackWallet($payee_wallet, $payer_wallet, $request->BearerToken());
             return ['mensagem' => 'Erro ao executar a transação! Nenhuma transação foi executada!'];
         }
     }
+
+    public function getTransactionById($id)
+    {
+        return $this->transactionRepository->getTransactionById($id);
+    }
+
+    public function updateTransactionById($request, $id) 
+    {
+        return $this->transactionRepository->updateTransactionById($request, $id);
+    }
+
+    public function deleteTransactionById($id) 
+    {
+        return $this->transactionRepository->deleteTransactionById($id);
+    }
+
+    //-----
 
     public function notificationAfterTransfer()
     {
@@ -61,10 +78,10 @@ class TransactionService
              
     }
 
-    public function rollBackWallet($payee_wallet, $payer_wallet)
+    public function rollBackWallet($payee_wallet, $payer_wallet, $token)
     {
         $wallets = ['payee_wallet' => $payee_wallet, 'payer_wallet' => $payer_wallet];
-        return WebService::rollBackTransaction('post', 'http://172.17.0.1:8001/api/wallet/rollback',$wallets);
+        return WebService::rollBackTransaction('post', 'http://172.17.0.1:8001/api/wallet/rollback', $wallets, $token);
     }
 
     public function checkBalance($payer_wallet, $request)

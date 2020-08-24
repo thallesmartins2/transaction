@@ -19,12 +19,21 @@ class WebService
         return $res;
     }
 
-    public static function request($verb, $param = null, $body = null)
+    public static function verificaToken($token)
+    {
+        $header = [
+            'Content-Type'  => 'application/x-www-form-urlencoded',
+            'Authorization' => 'Bearer '.$token,
+        ];
+       return self::conection('get', 'http://172.17.0.1:9000/api/validatoken', $header)->getStatusCode();
+    }
+
+    public static function request($verb, $param = null, $body = null, $token)
     {
         $url = $param ? 'http://172.17.0.1:8001/api/wallet/'.$param  : 'http://172.17.0.1:8001/api/wallet';
         $header = [
-            'Content-Type'  => 'application/json'
-            // 'Authorization' => 'Bearer '.$token,
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Bearer '.$token,
         ];
         return json_decode(self::conection($verb, $url, $header, $body)->getBody()->getContents());
     }
@@ -33,7 +42,6 @@ class WebService
     {
         $header = [
             'Content-Type'  => 'application/json'
-            // 'Authorization' => 'Bearer '.$token,
         ];
 
         return self::conection($verb, $url, $header);
@@ -43,17 +51,16 @@ class WebService
     {
         $header = [
             'Content-Type'  => 'application/json'
-            // 'Authorization' => 'Bearer '.$token,
         ];
 
         return json_decode(self::conection($verb, $url, $header)->getBody()->getContents());
     }
 
-    public static function rollBackTransaction($verb, $url, $body)
+    public static function rollBackTransaction($verb, $url, $body, $token)
     {
         $header = [
-            'Content-Type'  => 'application/json'
-            // 'Authorization' => 'Bearer '.$token,
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Bearer '.$token,
         ];
 
         return json_decode(self::conection($verb, $url, $header, $body)->getBody()->getContents());
